@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1029.0",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "db-migrate-pg": "^1.5.2",
+    "dotenv": "^17.4.1",
+    "express": "^5.2.1",
+    "git-filter-repo": "^0.0.30",
+    "jsonwebtoken": "^9.0.3",
+    "knex": "^3.2.9",
+    "migration": "^0.3.0",
+    "mime-types": "^3.0.2",
+    "multer": "^2.1.1",
+    "mysql2": "^3.22.0",
+    "pg": "^8.20.0",
+    "redis": "^5.11.0",
+    "ws": "^8.20.0"
+  }
+}
