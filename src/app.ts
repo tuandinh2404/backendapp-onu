@@ -1,0 +1,18 @@
+import express from 'express';
+import Logger from './loaders/logger';
+import config from './config';
+
+async function startServer() {
+    const app = express();
+    app.listen(config.port, () => {
+        Logger.info(`
+      ################################################
+      🛡️  Server đang chạy tại PORT: ${config.port} 🛡️
+      ################################################
+    `);
+    }).on('error', err => {
+        Logger.error(err);
+        process.exit(1);
+    })
+}
+startServer();

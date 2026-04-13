@@ -15,7 +15,16 @@
     "multer": "^2.1.1",
     "mysql2": "^3.22.0",
     "pg": "^8.20.0",
+    "pg-hstore": "^2.3.4",
     "redis": "^5.11.0",
+    "sequelize": "^6.37.8",
+    "tsconfig-paths": "^4.2.0",
+    "winston": "^3.19.0",
     "ws": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/sequelize": "^4.28.20",
+    "nodemon": "^3.1.14",
+    "sequelize-cli": "^6.6.5"
   }
 }
