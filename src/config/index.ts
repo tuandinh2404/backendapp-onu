@@ -8,7 +8,7 @@ if(envFound.error) {
 }
 
 export default {
-    port: parseInt(process.env.PORT, 10) || 3000,
+    port: parseInt(process.env.PORT || '3000', 10),
     database: {
         host: process.env.PG_HOST,
         port: process.env.PG_PORT,
