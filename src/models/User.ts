@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '@/loaders/sequelize';
+import {sequelize} from '@/loaders/sequelize';
 import { IUser } from '@/interfaces/IUser';
+import { create } from 'node:domain';
 
 const User = sequelize.define<IUser & any>('User', {
   id: {
@@ -34,8 +35,8 @@ const User = sequelize.define<IUser & any>('User', {
   },
  
   role: {
-    type: DataTypes.TEXT,
-    defaultValue: 'USER',
+    type: DataTypes.ENUM('admin', 'user'),
+    defaultValue: 'user',
   },
   is_active: {
     type: DataTypes.BOOLEAN,
@@ -44,6 +45,11 @@ const User = sequelize.define<IUser & any>('User', {
   last_login_at: {
     type: DataTypes.DATE,
   },
+  created_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
+  }
 }, {
   tableName: 'users',
   timestamps: true,

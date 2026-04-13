@@ -1,11 +1,11 @@
 import { Sequelize } from "sequelize";
 import config from '@/config';
-import { Logger } from "winston";
+import Logger from '@/loaders/logger';
 
-const sequelize =  new Sequelize(
-  config.database.name,
-  config.database.user,
-  config.database.password,
+export const sequelize =  new Sequelize(
+  config.database.name || '',
+  config.database.user || '',
+  config.database.password || '',
   {
     host: config.database.host,
     port: Number(config.database.port),
@@ -17,4 +17,3 @@ export default async() => {
     await sequelize.authenticate();
     Logger.info('Kết nối PostgreSQL thành công!');
 }
-export {sequelize};

@@ -4,6 +4,11 @@ import config from './config';
 
 async function startServer() {
     const app = express();
+
+
+    await require('./loaders').default({ expressApp: app });
+
+    
     app.listen(config.port, () => {
         Logger.info(`
       ################################################
