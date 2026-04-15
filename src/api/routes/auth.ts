@@ -49,4 +49,17 @@ router.post('/logout', async ( req: Request, res: Response) => {
   }
 })
 
+router.get('/check-username', async ( req: Request, res: Response) => {
+    try {
+        const { username } = req.query;
+        const exists = await authService.CheckUsernameExists(username as string);
+        res.status(200).json({ exists });
+    } catch (err) {
+        const error = err as Error;
+        res.status(400).json({
+            message: error.message || 'Kiểm tra tên người dùng thất bại'
+        })
+    }
+})
+
 export default router;

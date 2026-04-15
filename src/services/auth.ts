@@ -34,8 +34,10 @@ export default class AuthServices {
             throw err;
         }
     }
+
     public async SignIn(username: string, password: string, deviceInfo?: string): Promise<{ user: IUser; token: String; refreshToken: String }> {
-        const userRecord = await User.findOne({ where: { username } });
+        const nomalizedUsername = username.trim().toLowerCase();
+        const userRecord = await User.findOne({ where: { username: nomalizedUsername } });
         if(!userRecord) throw new Error('Không tìm thấy người dùng');
         const isPasswordValid = await bcrypt.compare(password, userRecord.getDataValue('password_hash'));
         if(!isPasswordValid) throw new Error('Mật khẩu không chính xác');
@@ -50,6 +52,15 @@ export default class AuthServices {
     }
     public async SignOut(refreshToken: string): Promise<void> {
         await Session.destroy({ where: { refresh_token: refreshToken } });
+    }
+
+    public async CheckUsernameExists(username: string): Promise<boolean> {
+        const nomalizedUsername = username.trim().toLowerCase();
+        const userRecord = await User.findOne({ 
+            where: { username: nomalizedUsername } 
+        });
+        if(!userRecord) return false;
+        return true;
     }
 
     private generateAccessToken(user: IUser): string {
