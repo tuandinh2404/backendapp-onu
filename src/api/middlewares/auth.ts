@@ -10,17 +10,18 @@ export default (req: Request, res: Response, next: NextFunction) => {
             message: "Không thể tìm thấy Token!!"
         })
     }
-    const token = authHeader.split(' ')[1];
+    const [scheme, token] =
+        authHeader.split(" ");
 
-    if(!token) {
+    if (scheme !== "Bearer" || !token) {
         return res.status(401).json({
-            message: "Token không hợp lệ!!"
-        })
+            message: "Token không hợp lệ"
+        });
     }
 
     try {
         const decoded = jwt.verify(token, config.jwtSecret);
-        req['currentUser'] = decoded;
+        req.currentUser = decoded as any;
         next();
     } catch (err) {
         return res.status(401).json({

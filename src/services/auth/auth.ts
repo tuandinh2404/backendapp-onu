@@ -4,19 +4,22 @@ import bcrypt from 'bcrypt';
 import config from '@/config';
 import { randomBytes } from 'crypto';
 import { IUser, IUserInputDTO } from '@/interfaces/IUser';
-import User from '@/models/User';
 import Session from '@/models/Session';
+import { UserRepository } from '@/repositories/UserRepository';
 
 export default class AuthServices {
+
+    private readonly userRepository = new UserRepository();
+
+
     public async SignUp(userInputDTO: IUserInputDTO): Promise<{ user: IUser; token: String; refreshToken: String }> {
         try{
-            const existing = await User.findOne({ where: { username: userInputDTO.username } });
+            const existing = await this.userRepository.getByUsername(userInputDTO.username);
             if(existing) throw new Error('Username đã tồn tại');
-            const checkUid = await User.findOne({ where: { uid: userInputDTO.uid } });
+            const checkUid = await this.userRepository.getByUid(userInputDTO.uid);
             if(checkUid) throw new Error('UID đã tồn tại');
-            const salt = randomBytes(32).toString('hex');
             const hash_password = await bcrypt.hash(userInputDTO.password, 10);
-            const userRecord = await User.create({
+            const userRecord = await this.userRepository.create({
                 username: userInputDTO.username,
                 password_hash: hash_password,
                 full_name: userInputDTO.full_name,
@@ -37,7 +40,7 @@ export default class AuthServices {
 
     public async SignIn(username: string, password: string, deviceInfo?: string): Promise<{ user: IUser; token: String; refreshToken: String }> {
         const nomalizedUsername = username.trim().toLowerCase();
-        const userRecord = await User.findOne({ where: { username: nomalizedUsername } });
+        const userRecord = await this.userRepository.getByUsername(nomalizedUsername);
         if(!userRecord) throw new Error('Không tìm thấy người dùng');
         const isPasswordValid = await bcrypt.compare(password, userRecord.getDataValue('password_hash'));
         if(!isPasswordValid) throw new Error('Mật khẩu không chính xác');
@@ -56,9 +59,7 @@ export default class AuthServices {
 
     public async CheckUsernameExists(username: string): Promise<boolean> {
         const nomalizedUsername = username.trim().toLowerCase();
-        const userRecord = await User.findOne({ 
-            where: { username: nomalizedUsername } 
-        });
+        const userRecord = await this.userRepository.getByUsername(nomalizedUsername);
         if(!userRecord) return false;
         return true;
     }
