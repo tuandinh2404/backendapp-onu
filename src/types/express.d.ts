@@ -1,4 +1,6 @@
-import { IJwtUser } from "@/interfaces/IJwtUser";
+import { IJwtUser } from "../interfaces/IJwtUser";
+
+
 declare global {
     namespace Express {
         interface Request {

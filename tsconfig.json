@@ -5,10 +5,7 @@
       "es2017",
       "esnext.asynciterable"
     ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ],
+    "ignoreDeprecations": "6.0",
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -32,5 +29,8 @@
   "exclude": [
     "node_modules",
     "tests"
-  ]
+  ],
+  "ts-node": {
+    "files": true
+  }
 }

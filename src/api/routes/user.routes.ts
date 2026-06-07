@@ -21,3 +21,22 @@ router.get(
     }
 
 });
+
+router.get(
+    '/search', 
+    authMiddleware, 
+    async ( req: Request, res: Response) => {
+    try {
+        const uid = req.query.uid as string;
+        if (!uid) {
+            return res.status(400).json({ message: 'UID is required' });
+        }
+        const user = await userService.searchUsers(uid);
+        res.status(200).json({ user });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+export default router;

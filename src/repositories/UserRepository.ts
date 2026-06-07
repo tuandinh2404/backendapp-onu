@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import User from '../models/User';
 
 export class UserRepository {
@@ -15,6 +16,16 @@ export class UserRepository {
     async getByUid(uid:string) {
         return await User.findOne({ 
             where: { uid } 
+        });
+    }
+
+    async searchByUid(uid: string) {
+        return await User.findAll({
+            where: {
+                uid: {
+                    [Op.like]: `%${uid}%`
+                }
+            }
         });
     }
 

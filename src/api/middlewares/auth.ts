@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import config from "@/config";
+import { IJwtUser } from "@/interfaces/IJwtUser";
 
 export default (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
@@ -20,8 +21,8 @@ export default (req: Request, res: Response, next: NextFunction) => {
     }
 
     try {
-        const decoded = jwt.verify(token, config.jwtSecret);
-        req.currentUser = decoded as any;
+        const decoded = jwt.verify(token, config.jwtSecret!) as IJwtUser;
+        req.currentUser = decoded;
         next();
     } catch (err) {
         return res.status(401).json({
